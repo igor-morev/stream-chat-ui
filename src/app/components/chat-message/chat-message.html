@@ -1,0 +1,18 @@
+<div class="flex gap-x-4">
+  <div class="rounded-full w-6 h-6 min-w-6 min-h-6 mt-2"
+    [class.bg-primary]="isMyMessage()"
+    [class.bg-tertiary]="!isMyMessage()"
+  ></div>
+  <div class="grow">
+    <div class="flex items-center justify-between">
+      <span class="text-tertiary" 
+        [class.text-primary]="isMyMessage()"
+        [class.text-tertiary]="!isMyMessage()"
+      >{{ message().sender.username }}</span>
+      <span class="text-xs text-gray-400">{{ message().updatedAt | date:'short' }}</span>
+    </div>
+    <div class="text-gray-700 break-words">
+      {{ message().content }}
+    </div>
+  </div>
+</div>

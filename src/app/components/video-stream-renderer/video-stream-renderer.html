@@ -1,0 +1,12 @@
+<video 
+  #videoElement
+  class="w-full h-full object-cover"
+  [attr.width]="width()"
+  [attr.height]="height()"
+  [style.width.px]="width()"
+  [style.height.px]="height()"
+  [autoplay]="true"
+  [muted]="!data().isAudioOn"
+  playsinline
+  [srcObject]="data().stream"
+></video>

@@ -1,1 +1,102 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use './theme-colors' as my-theme; // location of generated file
+
+@use 'tailwindcss';
+
+html {
+  @include mat.theme((
+    color: (
+      primary: my-theme.$primary-palette,
+      tertiary: my-theme.$tertiary-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+@theme {
+  --color-surface: var(--mat-sys-surface);
+  --color-on-surface: var(--mat-sys-on-surface);
+  --color-inverse-surface: var(--mat-sys-inverse-surface);
+
+  --color-primary: var(--mat-sys-primary);
+  --color-primary-container: var(--mat-sys-primary-container);
+  --color-on-primary: var(--mat-sys-on-primary);
+  --color-on-primary-container: var(--mat-sys-on-primary-container);
+  --color-secondary: var(--mat-sys-secondary);
+  --color-secondary-container: var(--mat-sys-secondary-container);
+  --color-tertiary: var(--mat-sys-tertiary);
+  --color-tertiary-container: var(--mat-sys-tertiary-container);
+  /* Добавьте другие токены по аналогии */
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+
+* {
+  box-sizing: border-box;
+}
+
+.de-input {
+  @apply px-2 py-1 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent w-full bg-white;
+}
+
+.de-primary-button {
+  @apply bg-primary text-on-primary px-4 py-2 rounded cursor-pointer;
+}
+
+a {
+  @apply text-primary;
+}
+
+.icon-button-xs {
+  // @include mat.button-density(-4);
+
+  /* Change the size of the icon inside the button */
+  --mat-icon-button-icon-size: 16px;
+
+  // // --mat-icon-button-icon-color: var(--mat-sys-primary);
+
+  // /* Optionally, change the overall button container size (default is 40px) */
+  --mat-icon-button-state-layer-size: var(--mat-icon-button-icon-size);
+
+  /* You may also need to adjust padding/dimensions for perfect centering */
+  // width: 50px;
+  // height: 50px;   
+  .mat-icon {
+    width: var(--mat-icon-button-icon-size);
+    height: var(--mat-icon-button-icon-size);
+    font-size: var(--mat-icon-button-icon-size);
+  }  
+}
+
+.overlay-panel {
+  @apply bg-white border border-gray-300 rounded z-50 py-2;
+}
+
+
+sc-root {
+  @apply h-full flex flex-col;
+}

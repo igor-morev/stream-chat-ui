@@ -1,0 +1,21 @@
+<sc-chat-layout>
+  <div class="chat-aside h-full pt-4">
+    <div class="mb-4 text-lg px-4">{{ user()?.username }} Chats</div>
+    <div class="px-4">
+      <input type="text" class="de-input mb-2" placeholder="Search" />
+    </div>
+    <ul>
+      @for (room of rooms$ | async; track room.id) {
+        <li
+          class="flex gap-x-4 border-t border-gray-100 px-4 py-2 bg-white cursor-pointer text-lg cursor-pointer"
+          [routerLink]="[room.id]"
+        >
+          <div class="rounded-full w-8 h-8 min-w-8 min-h-6 bg-secondary-container"></div>
+
+          <button routerLinkActive="font-bold" class="cursor-pointer">{{ room.name }}</button>
+        </li>
+      }
+    </ul>
+  </div>
+  <router-outlet class="chat-view" />
+</sc-chat-layout>

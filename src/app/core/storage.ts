@@ -1,0 +1,29 @@
+import { isPlatformBrowser } from "@angular/common";
+import { Injectable, inject, PLATFORM_ID } from "@angular/core";
+
+@Injectable({
+  providedIn: 'root',
+})
+export class Storage {
+  private platformId = inject(PLATFORM_ID);
+
+  setItem(key: string, value: string): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(key, value)
+    }
+  }
+
+  getItem(key: string): string | null {
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem(key);
+    }
+
+    return null;
+  }
+
+  removeItem(key: string): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem(key);
+    }
+  }
+}

@@ -1,0 +1,30 @@
+@if (localStream()) {
+  <sc-video-stream-renderer
+  class="w-full h-full border-gray-200"
+  [width]="elementRef.nativeElement.offsetWidth / 2"
+  [height]="elementRef.nativeElement.offsetHeight"
+  
+  [data]="{
+    stream: localStream(),
+    isLocal: true,
+    isAudioOn: isAudioOn()
+  }"/>
+}
+
+<div class="w-full bg-inverse-surface flex">
+  @for (item of remoteStream(); track item.userId) {
+    <sc-video-stream-renderer
+    class="w-full h-full border-gray-200"
+    [width]="elementRef.nativeElement.offsetWidth / 2"
+    [height]="elementRef.nativeElement.offsetHeight"
+    
+    [data]="{
+      stream: item.stream,
+      isLocal: false,
+      isAudioOn: true
+    }"/>
+  }
+  
+</div>
+
+

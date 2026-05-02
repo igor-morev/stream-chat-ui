@@ -1,0 +1,30 @@
+@let room = room$ | async;
+
+<div class="bg-secondary-container text-on-secondary-container px-4 py-2 flex justify-between items-center">
+  <div class="flex gap-x-4 items-center">
+    <div class="rounded-full w-6 h-6 min-w-6 min-h-6 bg-white"></div>
+    <div class="text-lg">
+      {{room?.name}}
+    </div>
+  </div>
+
+  <div>
+    @if (chatViewContext === 'chat') {
+      <sc-chat-editor-toolbar (callButtonClicked)="handleStartMeeting()" />
+    }
+  </div>
+</div>
+
+<div class="flex flex-col h-0 grow border-b border-primary-container">
+  <div class="overflow-y-auto grow viewport bg-white" #viewport>
+    @if (messages().length) {
+      @for (message of messages(); track message.id) {
+        <sc-chat-message [message]="message" [isMyMessage]="message.sender.id === user()?.id"/>
+      }
+    } @else {
+      <p class="p-4">No messages yet</p>
+    }
+  </div>
+</div>
+
+<sc-chat-editor-control (submitEvent)="sendMessage($event)"/>

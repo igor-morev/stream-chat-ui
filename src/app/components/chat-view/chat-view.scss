@@ -1,0 +1,9 @@
+@use 'tailwindcss';
+
+:host {
+  @apply flex flex-col h-full;
+}
+
+.viewport {
+  scroll-behavior: smooth;
+}

@@ -1,0 +1,10 @@
+@use 'tailwindcss';
+
+
+:host {
+  @apply block w-full;
+}
+
+.meeting-aside {
+  width: 400px;
+}

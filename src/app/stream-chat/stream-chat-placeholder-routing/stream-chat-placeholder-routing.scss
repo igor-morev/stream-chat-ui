@@ -1,0 +1,5 @@
+@use 'tailwindcss';
+
+:host {
+  @apply h-full p-4 bg-white flex items-center justify-center;
+}

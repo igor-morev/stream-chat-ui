@@ -1,0 +1,27 @@
+
+<form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+  <p class="mb-4 text-gray-700">
+    {{ isLoginMode ? 'Please enter your credentials to login.' : 'Please fill in the form to register.' }}
+  </p>
+  <div class="mb-2">
+    <label for="username">Username:</label>
+    <input id="username" formControlName="username" required class="de-input"/>
+  </div>
+  <div class="mb-4">
+    <label for="password">Password:</label>
+    <input id="password" type="password" formControlName="password" required class="de-input"/>
+  </div>
+
+  <button type="submit" [disabled]="authForm.invalid" class="de-primary-button mb-2">Login</button>
+
+  @if (isLoginMode) {
+    <p class=>
+      Don't have an account? <a routerLink="/register" class="text-blue-500 hover:underline">Register here</a>.
+    </p>
+  } @else {
+    <p>
+      Already have an account? <a routerLink="/login" class="text-blue-500 hover:underline">Login here</a>.
+    </p>
+  }
+  
+</form>

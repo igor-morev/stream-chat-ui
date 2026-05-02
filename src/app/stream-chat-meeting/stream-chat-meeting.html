@@ -1,0 +1,24 @@
+@let meetingInfo = meetingInfo$ | async;
+
+<sc-meeting-layout>
+  @if (meetingInfo) {
+    <sc-meeting-toolbar class="meeting-toolbar" 
+    [isChatOn]="isAsidePanelVisible()"
+    [isAudioOn]="isAudioOn()"
+    [isCameraOn]="isCameraOn()"
+    (leaveButtonClicked)="handleLeaveMeeting(meetingInfo!)"
+    (toggleChatClicked)="handleToggleChat()"
+    (toggleCameraClicked)="handleToggleCamera()"
+    (toggleAudioClicked)="handleToggleAudio()"
+    />
+  }
+
+  <sc-meeting-view class="meeting-view" [localStream]="localStream!" [remoteStream]="remoteStreams" [isAudioOn]="isAudioOn()"/>
+
+  @if (isAsidePanelVisible()) {
+    <div class="meeting-aside">
+      <sc-chat-view [chatId]="meetingId"/>
+    </div>
+  }
+
+</sc-meeting-layout>

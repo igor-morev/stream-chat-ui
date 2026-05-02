@@ -1,0 +1,4 @@
+<input [formControl]="formControl" type="text" class="de-input" (keyup.enter)="sendMessage()">
+<button matIconButton aria-label="Example icon button with a vertical three dot icon" [disabled]="formControl.invalid" (click)="sendMessage()">
+  <mat-icon>send</mat-icon>
+</button>
