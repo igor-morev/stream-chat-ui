@@ -1,6 +1,6 @@
 # 💬 Real-Time Chat & Video Meeting Engine
 
-A comprehensive real-time communication platform combining instant messaging and high-quality video conferencing. Built with **Angular 20** and **NestJS** utilizing **Native WebSockets**.
+A comprehensive real-time communication platform combining instant messaging and high-quality video conferencing. Built with **Angular 20** and [**NestJS**](https://github.com/igor-morev/generic-nest-api) utilizing **Native WebSockets**.
 
 ## 🚀 Key Features
 
