@@ -1,67 +1,70 @@
 # 💬 Real-Time Chat & Video Meeting Engine
 
-Комплексная платформа для общения в реальном времени, объединяющая функционал текстового чата и видеоконференций. Построена на **Angular 20** и **NestJS** с использованием **нативных WebSocket**.
+A comprehensive real-time communication platform combining instant messaging and high-quality video conferencing. Built with **Angular 20** and **NestJS** utilizing **Native WebSockets**.
 
-## 🚀 Основные возможности
+## 🚀 Key Features
 
-- **Текстовый чат**: Обмен сообщениями в реальном времени, индикация набора текста (`typing`) и статусы присутствия пользователей (`presence`).
-- **Видеовстречи (WebRTC)**: Групповые и P2P звонки по Mesh-архитектуре (direct connection).
-- **Native WebSockets**: Реализация через чистый протокол `ws` без тяжелых зависимостей (Socket.io), что гарантирует максимальную производительность.
-- **F5-Resilience**: Состояние звонков сохраняется на сервере. При обновлении страницы или переподключении сессия восстанавливается автоматически.
-- **Catch-up Notifications**: "Догоняющие" уведомления. При входе в приложение пользователь мгновенно получает приглашения в активные в данный момент звонки.
+- **Instant Messaging**: Real-time text exchange, typing indicators (`typing`), and user presence tracking (`presence`).
+- **Video Meetings (WebRTC)**: Group and P2P calls using Mesh architecture (direct peer-to-peer connection).
+- **Native WebSockets**: Built on pure `ws` protocol without heavy abstractions (like Socket.io), ensuring maximum performance and low latency.
+- **F5-Resilience**: Meeting states are persisted on the server. Sessions are automatically restored upon page refresh or reconnection.
+- **Catch-up Notifications**: Users instantly receive invitations to ongoing meetings upon logging into the application.
 
-## 📡 Протокол событий (Socket Events)
+## 📡 Socket Events Protocol
 
-Система использует единый канал связи для всех типов событий. Формат сообщений: `{ "event": "название", "data": { ... } }`.
+The system uses a single communication channel for all event types. Message format: `{ "event": "event_name", "data": { ... } }`.
 
-### 📝 Текстовый чат и Статусы
+### 📝 Chat & Presence
 
-| Событие | Описание |
+
+| Event | Description |
 | :--- | :--- |
-| `message` | Отправка и получение новых сообщений. |
-| `typing` | Уведомление о том, что собеседник набирает текст. |
-| `presence` | Обновление статуса присутствия пользователя (Online/Offline). |
+| `message` | Sending and receiving new text messages. |
+| `typing` | Notification that the interlocutor is typing. |
+| `presence` | User online/offline status updates. |
 
-### 🎥 Видеовстречи (WebRTC)
+### 🎥 Video Meetings (WebRTC)
 
-| Событие | Описание |
+
+| Event | Description |
 | :--- | :--- |
-| `start_meeting` | Инициация новой встречи. |
-| `meeting_invitation` | Рассылка приглашения участникам (статусы `active`/`inactive`). |
-| `join_meeting` | Сигнал от участника о готовности к установке связи. |
-| `video-signal` | Передача WebRTC сигналов (Offer, Answer, ICE Candidates). |
-| `meeting_user_joined` | Уведомление хоста о том, что участник зашел в комнату. |
-| `meeting_user_left` | Уведомление о выходе участника или обрыве его соединения. |
-| `leave_meeting` | Добровольный выход участника из текущего созвона. |
-| `stop_meeting` | (Host only) Полное завершение встречи и отзыв приглашений. |
-| `meeting_ended` | Сигнал для всех участников о принудительном закрытии комнаты. |
-| `get_room_info` | Запрос актуального состояния комнаты при загрузке страницы. |
-| `room_info_response` | Ответ сервера с данными о встрече и списке участников онлайн. |
+| `start_meeting` | Initiates a new meeting session. |
+| `meeting_invitation` | Broadcasts invitations (statuses: `active`/`inactive`). |
+| `join_meeting` | Signal from a participant ready to establish a connection. |
+| `video-signal` | Relay for WebRTC signals (Offer, Answer, ICE Candidates). |
+| `meeting_user_joined` | Notifies the host that a participant has entered the room. |
+| `meeting_user_left` | Notifies about a participant leaving or connection loss. |
+| `leave_meeting` | Manual exit from the current call. |
+| `stop_meeting` | (Host only) Terminates the meeting and revokes invitations. |
+| `meeting_ended` | Signal to all participants that the room is closed. |
+| `get_room_info` | Requests the current room state upon page initialization. |
+| `room_info_response` | Server response with meeting data and online participants list. |
 
-## 🛠 Стек технологий
+## 🛠 Tech Stack
 
 - **Frontend**: Angular 20 (Signals, DestroyRef, Standalone Components).
 - **Backend**: NestJS, **Native WebSockets** (`@nestjs/platform-ws`).
-- **Протокол**: WebRTC (Signaling через нативные сокеты).
+- **Protocol**: WebRTC (Signaling via native sockets).
 
-## 💻 Команды запуска
+## 💻 Getting Started
 
 ```bash
-# Установка зависимостей
+# Install dependencies
 npm install
 
-# Запуск в режиме разработки
+# Run in development mode
 npm run start
 ```
 
-## 🗺 Roadmap (Планы по развитию)
+## 🗺 Roadmap
 
-- [ ] **Redis Integration**: Перенос хранилища активных встреч из памяти сервера в Redis для обеспечения горизонтального масштабирования и отказоустойчивости.
-- [ ] **Smart Cleanup**: Реализация таймера автоматического завершения встречи, если в комнате не осталось активных участников в течение определенного времени.
-- [ ] **Screen Sharing**: Добавление возможности трансляции экрана через `getDisplayMedia`.
-- [ ] **Reconnection Grace Period**: Внедрение короткого периода ожидания при дисконнекте хоста, чтобы звонок не завершался мгновенно при кратковременных сбоях сети.
+- [ ] **Redis Integration**: Move active meeting storage to Redis for horizontal scaling and high availability.
+- [ ] **Smart Cleanup**: Implement an auto-termination timer if no active participants remain in the call.
+- [ ] **Screen Sharing**: Enable screen broadcasting using the `getDisplayMedia` API.
+- [ ] **Reconnection Grace Period**: Implement a short timeout for host disconnections to prevent instant call termination during network flickers.
 
-## ⚠️ Технические примечания
+## ⚠️ Technical Notes
 
-- **Очистка ресурсов**: При завершении вызова метод `closeAllConnections()` гарантированно останавливает `MediaStreamTrack` и закрывает порты `RTCPeerConnection`.
-- **Локальный поток**: Локальное видео всегда отображается с атрибутом `muted` для предотвращения акустической петли.
+- **Resource Cleanup**: When a call ends, the `closeAllConnections()` method stops all `MediaStreamTracks` and closes `RTCPeerConnection` ports.
+- **Local Stream**: The local video preview is always `muted` to prevent acoustic feedback loops (echo).
+- **Browser Support**: Optimized for **Chromium** and **Firefox**. Safari support is currently experimental/unsupported.
