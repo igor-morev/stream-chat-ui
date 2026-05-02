@@ -1,65 +1,67 @@
-# StreamChat
+# 💬 Real-Time Chat & Video Meeting Engine
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.3.
+Комплексная платформа для общения в реальном времени, объединяющая функционал текстового чата и видеоконференций. Построена на **Angular 20** и **NestJS** с использованием **нативных WebSocket**.
 
-## Development server
+## 🚀 Основные возможности
 
-To start a local development server, run:
+- **Текстовый чат**: Обмен сообщениями в реальном времени, индикация набора текста (`typing`) и статусы присутствия пользователей (`presence`).
+- **Видеовстречи (WebRTC)**: Групповые и P2P звонки по Mesh-архитектуре (direct connection).
+- **Native WebSockets**: Реализация через чистый протокол `ws` без тяжелых зависимостей (Socket.io), что гарантирует максимальную производительность.
+- **F5-Resilience**: Состояние звонков сохраняется на сервере. При обновлении страницы или переподключении сессия восстанавливается автоматически.
+- **Catch-up Notifications**: "Догоняющие" уведомления. При входе в приложение пользователь мгновенно получает приглашения в активные в данный момент звонки.
 
-```bash
-ng serve
-```
+## 📡 Протокол событий (Socket Events)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Система использует единый канал связи для всех типов событий. Формат сообщений: `{ "event": "название", "data": { ... } }`.
 
-## Code scaffolding
+### 📝 Текстовый чат и Статусы
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+| Событие | Описание |
+| :--- | :--- |
+| `message` | Отправка и получение новых сообщений. |
+| `typing` | Уведомление о том, что собеседник набирает текст. |
+| `presence` | Обновление статуса присутствия пользователя (Online/Offline). |
 
-```bash
-ng generate component component-name
-```
+### 🎥 Видеовстречи (WebRTC)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+| Событие | Описание |
+| :--- | :--- |
+| `start_meeting` | Инициация новой встречи. |
+| `meeting_invitation` | Рассылка приглашения участникам (статусы `active`/`inactive`). |
+| `join_meeting` | Сигнал от участника о готовности к установке связи. |
+| `video-signal` | Передача WebRTC сигналов (Offer, Answer, ICE Candidates). |
+| `meeting_user_joined` | Уведомление хоста о том, что участник зашел в комнату. |
+| `meeting_user_left` | Уведомление о выходе участника или обрыве его соединения. |
+| `leave_meeting` | Добровольный выход участника из текущего созвона. |
+| `stop_meeting` | (Host only) Полное завершение встречи и отзыв приглашений. |
+| `meeting_ended` | Сигнал для всех участников о принудительном закрытии комнаты. |
+| `get_room_info` | Запрос актуального состояния комнаты при загрузке страницы. |
+| `room_info_response` | Ответ сервера с данными о встрече и списке участников онлайн. |
 
-```bash
-ng generate --help
-```
+## 🛠 Стек технологий
 
-## Building
+- **Frontend**: Angular 20 (Signals, DestroyRef, Standalone Components).
+- **Backend**: NestJS, **Native WebSockets** (`@nestjs/platform-ws`).
+- **Протокол**: WebRTC (Signaling через нативные сокеты).
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## 💻 Команды запуска
 
 ```bash
-ng e2e
+# Установка зависимостей
+npm install
+
+# Запуск в режиме разработки
+npm run start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 🗺 Roadmap (Планы по развитию)
 
-## Additional Resources
+- [ ] **Redis Integration**: Перенос хранилища активных встреч из памяти сервера в Redis для обеспечения горизонтального масштабирования и отказоустойчивости.
+- [ ] **Smart Cleanup**: Реализация таймера автоматического завершения встречи, если в комнате не осталось активных участников в течение определенного времени.
+- [ ] **Screen Sharing**: Добавление возможности трансляции экрана через `getDisplayMedia`.
+- [ ] **Reconnection Grace Period**: Внедрение короткого периода ожидания при дисконнекте хоста, чтобы звонок не завершался мгновенно при кратковременных сбоях сети.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## ⚠️ Технические примечания
 
-"server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+- **Очистка ресурсов**: При завершении вызова метод `closeAllConnections()` гарантированно останавливает `MediaStreamTrack` и закрывает порты `RTCPeerConnection`.
+- **Локальный поток**: Локальное видео всегда отображается с атрибутом `muted` для предотвращения акустической петли.
